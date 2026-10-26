@@ -1,25 +1,8 @@
 {
     "logs": [
         {
-            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-45:/values-b+sr+Latn/values-b+sr+Latn.xml",
+            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-46:/values-b+sr+Latn/values-b+sr+Latn.xml",
             "map": [
-                {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\504a18de1692a927033cd57ea3c30779\\transformed\\core-1.13.1\\res\\values-b+sr+Latn\\values-b+sr+Latn.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,153,255,352,456,560,665,781",
-                        "endColumns": "97,101,96,103,103,104,115,100",
-                        "endOffsets": "148,250,347,451,555,660,776,877"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,81",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,203,305,402,506,610,715,8396",
-                        "endColumns": "97,101,96,103,103,104,115,100",
-                        "endOffsets": "198,300,397,501,605,710,826,8492"
-                    }
-                },
                 {
                     "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\e7a10d0b3020a2e14d9c771b23c1d933\\transformed\\material3-release\\res\\values-b+sr+Latn\\values-b+sr+Latn.xml",
                     "from": {
@@ -52,6 +35,23 @@
                         "startOffsets": "831,928,1015,1112,1213,1299,1376,7748,7840,7925,8005,8090,8163,8240,8319,8497,8576,8646",
                         "endColumns": "96,86,96,100,85,76,90,91,84,79,84,72,76,78,76,78,69,117",
                         "endOffsets": "923,1010,1107,1208,1294,1371,1462,7835,7920,8000,8085,8158,8235,8314,8391,8571,8641,8759"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\ddd667342d5d23d94f96eedcf0279407\\transformed\\core-1.15.0\\res\\values-b+sr+Latn\\values-b+sr+Latn.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,153,255,352,456,560,665,781",
+                        "endColumns": "97,101,96,103,103,104,115,100",
+                        "endOffsets": "148,250,347,451,555,660,776,877"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,81",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,203,305,402,506,610,715,8396",
+                        "endColumns": "97,101,96,103,103,104,115,100",
+                        "endOffsets": "198,300,397,501,605,710,826,8492"
                     }
                 },
                 {

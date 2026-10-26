@@ -13,7 +13,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "0.1.0"
+        versionName = "0.1.1"
     }
 
     buildTypes {
@@ -38,5 +38,6 @@ dependencies {
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.core:core-ktx:1.15.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
 }

@@ -2,12 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.opendrive.launcher"
     android:versionCode="1"
-    android:versionName="0.1.0" >
+    android:versionName="0.1.1" >
 
     <uses-sdk
         android:minSdkVersion="26"
         android:targetSdkVersion="34" />
 
+    <!-- Required for GitHub update checks and APK downloads -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Allows the user to approve APK installation -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <!-- Discover installed apps that expose a launcher activity -->
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
@@ -35,18 +42,34 @@
             android:configChanges="orientation|screenSize|keyboardHidden|uiMode"
             android:exported="true"
             android:screenOrientation="landscape" >
+
+            <!-- Make OpenDrive available as the default Home launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+            <!-- Keep OpenDrive visible in the normal app launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Share downloaded APK securely with the package installer -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="org.opendrive.launcher.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name="androidx.compose.ui.tooling.PreviewActivity"
             android:exported="true" />

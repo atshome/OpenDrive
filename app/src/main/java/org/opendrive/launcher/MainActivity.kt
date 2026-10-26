@@ -1,13 +1,28 @@
+
 package org.opendrive.launcher
 
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -15,171 +30,442 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Brightness4
-import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Speed
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
+import androidx.core.graphics.drawable.toBitmap
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-private val Ink = Color(0xFF0B1017)
-private val Panel = Color(0xFF151E29)
-private val Panel2 = Color(0xFF1C2937)
-private val Accent = Color(0xFF56D6C2)
-private val Muted = Color(0xFF9AAABD)
+private val Ink = Color(0xFF10151C)
+private val Panel = Color(0xFF1B232D)
+private val Accent = Color(0xFF5CE1E6)
+private val Muted = Color(0xFF9AA8B8)
+
+data class LaunchableApp(
+    val label: String,
+    val packageName: String,
+    val icon: Drawable
+)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { OpenDriveApp() }
+
+        setContent {
+            OpenDriveApp()
+        }
     }
 }
 
-data class LaunchableApp(val label: String, val packageName: String, val icon: android.graphics.drawable.Drawable)
-
 @Composable
-private fun OpenDriveApp() {
+fun OpenDriveApp() {
     val context = LocalContext.current
-    val configuration = LocalConfiguration.current
-    // Automotive displays may report 360–480dp height even at physical 1280x720.
-    val compact = configuration.screenHeightDp < 430
-    var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
-    var showApps by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
     var lightMode by remember { mutableStateOf(false) }
-    var apps by remember { mutableStateOf(emptyList<LaunchableApp>()) }
+    var showAllApps by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        while (true) {
-            now = System.currentTimeMillis()
-            delay(1000)
-        }
-    }
-    LaunchedEffect(showApps) {
-        if (showApps) {
-            val pm = context.packageManager
-            val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
-            @Suppress("DEPRECATION")
-            apps = pm.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-                .mapNotNull { info ->
-                    val pkg = info.activityInfo?.packageName ?: return@mapNotNull null
-                    if (pkg == context.packageName) return@mapNotNull null
-                    LaunchableApp(info.loadLabel(pm).toString(), pkg, info.loadIcon(pm))
-                }
-                .distinctBy { it.packageName }
-                .sortedBy { it.label.lowercase(Locale.getDefault()) }
-        }
+    val apps = remember { getLaunchableApps(context) }
+
+    val background = if (lightMode) {
+        Color(0xFFF0F3F7)
+    } else {
+        Ink
     }
 
-    val bg = if (lightMode) Color(0xFFEAF0F4) else Ink
-    val panel = if (lightMode) Color.White else Panel
-    val primary = if (lightMode) Color(0xFF14212C) else Color.White
-    val secondary = if (lightMode) Color(0xFF536474) else Muted
+    val cardColor = if (lightMode) {
+        Color.White
+    } else {
+        Panel
+    }
 
-    MaterialTheme(colorScheme = darkColorScheme(primary = Accent, background = bg, surface = panel)) {
-        Surface(modifier = Modifier.fillMaxSize(), color = bg) {
-            if (showApps) {
-                Column(Modifier.fillMaxSize().padding(if (compact) 14.dp else 22.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                        Column {
-                            Text("APP LIBRARY", color = Accent, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 2.sp)
-                            Text("Your apps", color = primary, fontSize = 28.sp, fontWeight = FontWeight.SemiBold)
-                        }
-                        Button(onClick = { showApps = false }) { Text("Dashboard") }
+    val primaryText = if (lightMode) {
+        Color(0xFF17202A)
+    } else {
+        Color.White
+    }
+
+    val secondaryText = if (lightMode) {
+        Color(0xFF657384)
+    } else {
+        Muted
+    }
+
+    val time = remember {
+        SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+    }
+
+    val date = remember {
+        SimpleDateFormat("EEE, dd MMM", Locale.getDefault()).format(Date())
+    }
+
+    MaterialTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = background
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                horizontalArrangement = Arrangement.spacedBy(18.dp)
+            ) {
+                // Left navigation panel
+                Column(
+                    modifier = Modifier
+                        .weight(0.9f)
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    Text(
+                        text = "OPENDRIVE",
+                        color = Accent,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 3.sp
+                    )
+
+                    Text(
+                        text = time,
+                        color = primaryText,
+                        fontSize = 54.sp,
+                        fontWeight = FontWeight.Light
+                    )
+
+                    Text(
+                        text = date,
+                        color = secondaryText,
+                        fontSize = 16.sp
+                    )
+
+                    Spacer(Modifier.height(4.dp))
+
+                    MetricChip(
+                        icon = Icons.Default.Speed,
+                        title = "VEHICLE",
+                        value = "Ready",
+                        cardColor = cardColor,
+                        primaryText = primaryText,
+                        secondaryText = secondaryText
+                    )
+
+                    ActionTile(
+                        icon = Icons.Default.Apps,
+                        title = if (showAllApps) "Dashboard" else "All apps",
+                        subtitle = if (showAllApps) {
+                            "Return to home"
+                        } else {
+                            "Browse installed apps"
+                        },
+                        cardColor = cardColor,
+                        primaryText = primaryText,
+                        secondaryText = secondaryText
+                    ) {
+                        showAllApps = !showAllApps
                     }
-                    Spacer(Modifier.height(if (compact) 10.dp else 16.dp))
-                    LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 130.dp), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        items(apps, key = { it.packageName }) { app ->
-                            Column(
-                                Modifier.fillMaxWidth().background(panel, RoundedCornerShape(16.dp)).clickable {
-                                    context.packageManager.getLaunchIntentForPackage(app.packageName)?.let(context::startActivity)
-                                }.padding(16.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
+
+                    ActionTile(
+                        icon = Icons.Default.MusicNote,
+                        title = "Music",
+                        subtitle = "Open your music app",
+                        cardColor = cardColor,
+                        primaryText = primaryText,
+                        secondaryText = secondaryText
+                    ) {
+                        launchByIntent(
+                            context,
+                            listOf(
+                                "com.spotify.music",
+                                "com.google.android.youtube.music",
+                                "com.android.music"
+                            )
+                        )
+                    }
+
+                    ActionTile(
+                        icon = Icons.Default.Settings,
+                        title = "Settings",
+                        subtitle = "System settings",
+                        cardColor = cardColor,
+                        primaryText = primaryText,
+                        secondaryText = secondaryText
+                    ) {
+                        runCatching {
+                            context.startActivity(
+                                Intent(Settings.ACTION_SETTINGS).apply {
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
+                            )
+                        }.onFailure {
+                            Toast.makeText(
+                                context,
+                                "Could not open settings",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    Spacer(Modifier.weight(1f))
+
+                    Button(
+                        onClick = { lightMode = !lightMode },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = cardColor,
+                            contentColor = primaryText
+                        )
+                    ) {
+                        Icon(
+                            Icons.Default.Brightness4,
+                            contentDescription = "Toggle appearance"
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(if (lightMode) "Light mode" else "Dark mode")
+                    }
+                }
+
+                // Main content panel
+                Column(
+                    modifier = Modifier
+                        .weight(1.5f)
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    if (showAllApps) {
+                        Text(
+                            text = "Your apps",
+                            color = primaryText,
+                            fontSize = 26.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        LazyVerticalGrid(
+                            columns = GridCells.Adaptive(minSize = 115.dp),
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(
+                                items = apps,
+                                key = { it.packageName }
+                            ) { app ->
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(120.dp)
+                                        .clickable {
+                                            launchByIntent(
+                                                context,
+                                                listOf(app.packageName)
+                                            )
+                                        },
+                                    shape = RoundedCornerShape(18.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = cardColor
+                                    )
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .padding(10.dp),
+                                        horizontalAlignment =
+                                            Alignment.CenterHorizontally,
+                                        verticalArrangement =
+                                            Arrangement.Center
+                                    ) {
+                                        // Compatibility fix: convert Drawable
+                                        // to Bitmap and display using BitmapPainter.
+                                        val appBitmap = remember(app.icon) {
+                                            app.icon.toBitmap(
+                                                width = 96,
+                                                height = 96
+                                            ).asImageBitmap()
+                                        }
+
+                                        Image(
+                                            painter = BitmapPainter(appBitmap),
+                                            contentDescription = app.label,
+                                            modifier = Modifier.size(42.dp)
+                                        )
+
+                                        Spacer(Modifier.height(8.dp))
+
+                                        Text(
+                                            text = app.label,
+                                            color = primaryText,
+                                            fontSize = 13.sp,
+                                            maxLines = 2
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        Text(
+                            text = "Good to see you",
+                            color = primaryText,
+                            fontSize = 27.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Text(
+                            text = "Your drive. Your apps. Your control.",
+                            color = secondaryText,
+                            fontSize = 15.sp
+                        )
+
+                        // OpenDrive update card
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(22.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = cardColor
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(18.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Box(Modifier.size(44.dp).background(Panel2, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
-                                    Text(app.label.take(1).uppercase(Locale.getDefault()), color = Accent, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                                Box(
+                                    modifier = Modifier
+                                        .size(48.dp)
+                                        .background(
+                                            Accent.copy(alpha = 0.15f),
+                                            RoundedCornerShape(14.dp)
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    // Uses Apps to avoid requiring extended icons.
+                                    Icon(
+                                        imageVector = Icons.Default.Apps,
+                                        contentDescription = "OpenDrive updates",
+                                        tint = Accent,
+                                        modifier = Modifier.size(26.dp)
+                                    )
                                 }
-                                Text(app.label, color = primary, fontSize = 14.sp, maxLines = 2)
+
+                                Spacer(Modifier.width(14.dp))
+
+                                Column(
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text(
+                                        text = "OpenDrive updates",
+                                        color = primaryText,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 17.sp
+                                    )
+
+                                    Spacer(Modifier.height(4.dp))
+
+                                    Text(
+                                        text = "Check GitHub for a new release",
+                                        color = secondaryText,
+                                        fontSize = 12.sp
+                                    )
+                                }
+
+                                Button(
+                                    onClick = {
+                                        scope.launch {
+                                            `OpenDriveUpdater.kt`.checkForUpdate(
+                                                context
+                                            )
+                                        }
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Accent,
+                                        contentColor = Ink
+                                    )
+                                ) {
+                                    Text("Check")
+                                }
                             }
                         }
-                    }
-                }
-            } else {
-                Row(Modifier.fillMaxSize().padding(if (compact) 10.dp else 18.dp), horizontalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 16.dp)) {
-                    Column(Modifier.weight(1.05f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 14.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Box(Modifier.size(9.dp).background(Accent, RoundedCornerShape(50)))
-                            Text("OPENDRIVE", color = secondary, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 3.sp)
-                            Spacer(Modifier.weight(1f))
-                            IconButton(onClick = { lightMode = !lightMode }) { Icon(Icons.Default.Brightness4, "Toggle theme", tint = secondary) }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                        ) {
+                            InfoCard(
+                                title = "APP LIBRARY",
+                                value = "${apps.size} apps",
+                                cardColor = cardColor,
+                                primaryText = primaryText,
+                                secondaryText = secondaryText,
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            InfoCard(
+                                title = "LAUNCHER",
+                                value = "Active",
+                                cardColor = cardColor,
+                                primaryText = primaryText,
+                                secondaryText = secondaryText,
+                                modifier = Modifier.weight(1f)
+                            )
                         }
-                        Column(Modifier.weight(1f).fillMaxWidth().background(panel, RoundedCornerShape(24.dp)).padding(if (compact) 14.dp else 22.dp), verticalArrangement = Arrangement.Center) {
-                            Text(SimpleDateFormat("EEEE, dd MMMM", Locale.getDefault()).format(Date(now)).uppercase(Locale.getDefault()), color = secondary, fontSize = 13.sp, letterSpacing = 1.5.sp)
-                            Spacer(Modifier.height(4.dp))
-                            Text(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(now)), color = primary, fontSize = if (compact) 48.sp else 62.sp, fontWeight = FontWeight.Light, letterSpacing = (-2).sp)
-                            Spacer(Modifier.height(if (compact) 10.dp else 18.dp))
-                            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                MetricChip(
-                                    "GPS SPEED",
-                                    "-- km/h",
-                                    Icons.Default.Speed,
-                                    Panel2,
-                                    primary,
-                                    secondary
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(22.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = cardColor
+                            )
+                        ) {
+                            Column(Modifier.padding(20.dp)) {
+                                Text(
+                                    text = "Quick note",
+                                    color = primaryText,
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
 
-                                MetricChip(
-                                    "COMPASS",
-                                    "--°",
-                                    Icons.Default.Explore,
-                                    Panel2,
-                                    primary,
-                                    secondary
+                                Spacer(Modifier.height(8.dp))
+
+                                Text(
+                                    text = "Drive safely. Keep your focus on the road.",
+                                    color = secondaryText,
+                                    fontSize = 14.sp
                                 )
-                         }
-                        }
-                        Row(Modifier.fillMaxWidth().height(if (compact) 62.dp else 78.dp), horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)) {
-                            ActionTile("All apps", Icons.Default.Apps, panel, primary, secondary, Modifier.weight(1f)) { showApps = true }
-                            ActionTile("Music", Icons.Default.MusicNote, panel, primary, secondary, Modifier.weight(1f)) { launchByIntent(context, "android.intent.action.MUSIC_PLAYER") }
-                            ActionTile("Settings", Icons.Default.Settings, panel, primary, secondary, Modifier.weight(1f)) { context.startActivity(Intent(android.provider.Settings.ACTION_SETTINGS)) }
-                        }
-                    }
-                    Column(Modifier.weight(0.9f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 14.dp)) {
-                        Column(Modifier.weight(1f).fillMaxWidth().background(Panel2, RoundedCornerShape(24.dp)).padding(if (compact) 14.dp else 22.dp), verticalArrangement = Arrangement.SpaceBetween) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Column(Modifier.weight(1f)) {
-                                    Text("NOW PLAYING", color = Accent, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 2.sp)
-                                    Spacer(Modifier.height(6.dp))
-                                    Text("Ready for your drive", color = primary, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
-                                    Text("Connect a media app to show track details.", color = secondary, fontSize = 13.sp)
-                                }
-                                Icon(Icons.Default.MusicNote, null, tint = Accent, modifier = Modifier.size(38.dp))
-                            }
-                            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                Button(onClick = { launchByIntent(context, "android.intent.action.MUSIC_PLAYER") }, colors = ButtonDefaults.buttonColors(containerColor = Accent, contentColor = Ink)) { Text("Open music") }
-                                OutlinedButton(onClick = { showApps = true }) { Text("Browse apps") }
                             }
                         }
-                        Row(Modifier.fillMaxWidth().background(panel, RoundedCornerShape(18.dp)).padding(if (compact) 10.dp else 16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Column(Modifier.weight(1f)) {
-                                Text("QUICK NOTE", color = Accent, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
-                                Text("Widgets and shortcuts are coming next.", color = primary, fontSize = 14.sp)
-                            }
-                            Text("v0.1", color = secondary, fontSize = 12.sp)
-                        }
+
+                        Spacer(Modifier.weight(1f))
+
+                        Text(
+                            text = "OpenDrive • Open-source car launcher",
+                            color = secondaryText,
+                            fontSize = 12.sp
+                        )
                     }
                 }
             }
@@ -188,27 +474,178 @@ private fun OpenDriveApp() {
 }
 
 @Composable
-private fun MetricChip(label: String, value: String, icon: ImageVector, panel: Color, primary: Color, secondary: Color) {
-    Column(Modifier.background(panel, RoundedCornerShape(14.dp)).padding(horizontal = 12.dp, vertical = 10.dp).widthIn(min = 105.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-            Icon(icon, null, tint = Accent, modifier = Modifier.size(15.dp))
-            Text(label, color = secondary, fontSize = 9.sp, letterSpacing = 1.sp, fontWeight = FontWeight.Bold)
+private fun MetricChip(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    value: String,
+    cardColor: Color,
+    primaryText: Color,
+    secondaryText: Color
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = cardColor)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = Accent,
+                modifier = Modifier.size(26.dp)
+            )
+
+            Spacer(Modifier.width(12.dp))
+
+            Column {
+                Text(
+                    text = title,
+                    color = secondaryText,
+                    fontSize = 10.sp,
+                    letterSpacing = 1.5.sp
+                )
+
+                Text(
+                    text = value,
+                    color = primaryText,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
         }
-        Spacer(Modifier.height(4.dp))
-        Text(value, color = primary, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
     }
 }
 
 @Composable
-private fun ActionTile(title: String, icon: ImageVector, panel: Color, primary: Color, secondary: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Row(modifier.background(panel, RoundedCornerShape(16.dp)).clickable(onClick = onClick).padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(9.dp)) {
-        Icon(icon, null, tint = Accent, modifier = Modifier.size(24.dp))
-        Text(title, color = primary, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+private fun ActionTile(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    subtitle: String,
+    cardColor: Color,
+    primaryText: Color,
+    secondaryText: Color,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = cardColor)
+    ) {
+        Row(
+            modifier = Modifier.padding(13.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                tint = Accent,
+                modifier = Modifier.size(27.dp)
+            )
+
+            Spacer(Modifier.width(12.dp))
+
+            Column {
+                Text(
+                    text = title,
+                    color = primaryText,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+
+                Text(
+                    text = subtitle,
+                    color = secondaryText,
+                    fontSize = 11.sp
+                )
+            }
+        }
     }
 }
 
-private fun launchByIntent(context: android.content.Context, action: String) {
-    val intent = Intent(action).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    runCatching { context.startActivity(intent) }
-        .onFailure { context.startActivity(Intent(android.provider.Settings.ACTION_SETTINGS)) }
+@Composable
+private fun InfoCard(
+    title: String,
+    value: String,
+    cardColor: Color,
+    primaryText: Color,
+    secondaryText: Color,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(containerColor = cardColor)
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Text(
+                text = title,
+                color = secondaryText,
+                fontSize = 10.sp,
+                letterSpacing = 1.sp
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                text = value,
+                color = primaryText,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+private fun getLaunchableApps(context: Context): List<LaunchableApp> {
+    val packageManager = context.packageManager
+
+    val intent = Intent(Intent.ACTION_MAIN).apply {
+        addCategory(Intent.CATEGORY_LAUNCHER)
+    }
+
+    return packageManager.queryIntentActivities(intent, 0)
+        .mapNotNull { resolveInfo ->
+            val packageName = resolveInfo.activityInfo?.packageName
+                ?: return@mapNotNull null
+
+            LaunchableApp(
+                label = resolveInfo.loadLabel(packageManager).toString(),
+                packageName = packageName,
+                icon = resolveInfo.loadIcon(packageManager)
+            )
+        }
+        .filter { it.packageName != context.packageName }
+        .distinctBy { it.packageName }
+        .sortedBy { it.label.lowercase(Locale.getDefault()) }
+}
+
+private fun launchByIntent(
+    context: Context,
+    packageNames: List<String>
+) {
+    val packageManager = context.packageManager
+
+    for (packageName in packageNames) {
+        val launchIntent =
+            packageManager.getLaunchIntentForPackage(packageName)
+
+        if (launchIntent != null) {
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(launchIntent)
+            return
+        }
+    }
+
+    Toast.makeText(
+        context,
+        "No compatible app found",
+        Toast.LENGTH_SHORT
+    ).show()
 }

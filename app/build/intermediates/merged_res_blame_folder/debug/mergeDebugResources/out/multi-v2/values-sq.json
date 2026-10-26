@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-45:/values-sq/values-sq.xml",
+            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-46:/values-sq/values-sq.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\64566cec9e8de1b5f44c169dfacca070\\transformed\\ui-release\\res\\values-sq\\values-sq.xml",
@@ -21,6 +21,23 @@
                     }
                 },
                 {
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\ddd667342d5d23d94f96eedcf0279407\\transformed\\core-1.15.0\\res\\values-sq\\values-sq.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,154,256,354,451,559,670,792",
+                        "endColumns": "98,101,97,96,107,110,121,100",
+                        "endOffsets": "149,251,349,446,554,665,787,888"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,81",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,204,306,404,501,609,720,8484",
+                        "endColumns": "98,101,97,96,107,110,121,100",
+                        "endOffsets": "199,301,399,496,604,715,837,8580"
+                    }
+                },
+                {
                     "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\53b7f96d5cc440c85417acf85e528e9a\\transformed\\foundation-release\\res\\values-sq\\values-sq.xml",
                     "from": {
                         "startLines": "2,3",
@@ -35,23 +52,6 @@
                         "startOffsets": "8849,8947",
                         "endColumns": "97,98",
                         "endOffsets": "8942,9041"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\504a18de1692a927033cd57ea3c30779\\transformed\\core-1.13.1\\res\\values-sq\\values-sq.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,154,256,354,451,559,670,792",
-                        "endColumns": "98,101,97,96,107,110,121,100",
-                        "endOffsets": "149,251,349,446,554,665,787,888"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,81",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,204,306,404,501,609,720,8484",
-                        "endColumns": "98,101,97,96,107,110,121,100",
-                        "endOffsets": "199,301,399,496,604,715,837,8580"
                     }
                 },
                 {

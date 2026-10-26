@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-45:/values-uk/values-uk.xml",
+            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-46:/values-uk/values-uk.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\53b7f96d5cc440c85417acf85e528e9a\\transformed\\foundation-release\\res\\values-uk\\values-uk.xml",
@@ -18,23 +18,6 @@
                         "startOffsets": "8786,8883",
                         "endColumns": "96,99",
                         "endOffsets": "8878,8978"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\504a18de1692a927033cd57ea3c30779\\transformed\\core-1.13.1\\res\\values-uk\\values-uk.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,155,257,358,459,564,669,782",
-                        "endColumns": "99,101,100,100,104,104,112,100",
-                        "endOffsets": "150,252,353,454,559,664,777,878"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,81",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,205,307,408,509,614,719,8412",
-                        "endColumns": "99,101,100,100,104,104,112,100",
-                        "endOffsets": "200,302,403,504,609,714,827,8508"
                     }
                 },
                 {
@@ -69,6 +52,23 @@
                         "startOffsets": "832,925,1009,1111,1212,1296,1378,7767,7855,7937,8022,8110,8182,8258,8335,8513,8593,8663",
                         "endColumns": "92,83,101,100,83,81,88,87,81,84,87,71,75,76,76,79,69,122",
                         "endOffsets": "920,1004,1106,1207,1291,1373,1462,7850,7932,8017,8105,8177,8253,8330,8407,8588,8658,8781"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\ddd667342d5d23d94f96eedcf0279407\\transformed\\core-1.15.0\\res\\values-uk\\values-uk.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,155,257,358,459,564,669,782",
+                        "endColumns": "99,101,100,100,104,104,112,100",
+                        "endOffsets": "150,252,353,454,559,664,777,878"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,81",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,205,307,408,509,614,719,8412",
+                        "endColumns": "99,101,100,100,104,104,112,100",
+                        "endOffsets": "200,302,403,504,609,714,827,8508"
                     }
                 }
             ]

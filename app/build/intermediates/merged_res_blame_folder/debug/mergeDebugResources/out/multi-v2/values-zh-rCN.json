@@ -1,8 +1,25 @@
 {
     "logs": [
         {
-            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-45:/values-zh-rCN/values-zh-rCN.xml",
+            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-46:/values-zh-rCN/values-zh-rCN.xml",
             "map": [
+                {
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\ddd667342d5d23d94f96eedcf0279407\\transformed\\core-1.15.0\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,147,248,342,436,529,623,719",
+                        "endColumns": "91,100,93,93,92,93,95,100",
+                        "endOffsets": "142,243,337,431,524,618,714,815"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,81",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,197,298,392,486,579,673,7449",
+                        "endColumns": "91,100,93,93,92,93,95,100",
+                        "endOffsets": "192,293,387,481,574,668,764,7545"
+                    }
+                },
                 {
                     "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\53b7f96d5cc440c85417acf85e528e9a\\transformed\\foundation-release\\res\\values-zh-rCN\\values-zh-rCN.xml",
                     "from": {
@@ -35,23 +52,6 @@
                         "startOffsets": "769,846,922,1007,1098,1175,1249,6864,6942,7017,7090,7165,7233,7306,7378,7550,7623,7689",
                         "endColumns": "76,75,84,90,76,73,76,77,74,72,74,67,72,71,70,72,65,115",
                         "endOffsets": "841,917,1002,1093,1170,1244,1321,6937,7012,7085,7160,7228,7301,7373,7444,7618,7684,7800"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\504a18de1692a927033cd57ea3c30779\\transformed\\core-1.13.1\\res\\values-zh-rCN\\values-zh-rCN.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,147,248,342,436,529,623,719",
-                        "endColumns": "91,100,93,93,92,93,95,100",
-                        "endOffsets": "142,243,337,431,524,618,714,815"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,81",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,197,298,392,486,579,673,7449",
-                        "endColumns": "91,100,93,93,92,93,95,100",
-                        "endOffsets": "192,293,387,481,574,668,764,7545"
                     }
                 },
                 {

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-45:/values-iw/values-iw.xml",
+            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-46:/values-iw/values-iw.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\53b7f96d5cc440c85417acf85e528e9a\\transformed\\foundation-release\\res\\values-iw\\values-iw.xml",
@@ -38,23 +38,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\504a18de1692a927033cd57ea3c30779\\transformed\\core-1.13.1\\res\\values-iw\\values-iw.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,149,251,348,445,546,646,752",
-                        "endColumns": "93,101,96,96,100,99,105,100",
-                        "endOffsets": "144,246,343,440,541,641,747,848"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,81",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,199,301,398,495,596,696,8119",
-                        "endColumns": "93,101,96,96,100,99,105,100",
-                        "endOffsets": "194,296,393,490,591,691,797,8215"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\64566cec9e8de1b5f44c169dfacca070\\transformed\\ui-release\\res\\values-iw\\values-iw.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
@@ -69,6 +52,23 @@
                         "startOffsets": "802,891,975,1068,1163,1246,1323,7497,7583,7662,7740,7822,7891,7965,8043,8220,8294,8365",
                         "endColumns": "88,83,92,94,82,76,84,85,78,77,81,68,73,77,75,73,70,118",
                         "endOffsets": "886,970,1063,1158,1241,1318,1403,7578,7657,7735,7817,7886,7960,8038,8114,8289,8360,8479"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\ddd667342d5d23d94f96eedcf0279407\\transformed\\core-1.15.0\\res\\values-iw\\values-iw.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,149,251,348,445,546,646,752",
+                        "endColumns": "93,101,96,96,100,99,105,100",
+                        "endOffsets": "144,246,343,440,541,641,747,848"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,81",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,199,301,398,495,596,696,8119",
+                        "endColumns": "93,101,96,96,100,99,105,100",
+                        "endOffsets": "194,296,393,490,591,691,797,8215"
                     }
                 }
             ]

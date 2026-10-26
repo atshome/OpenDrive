@@ -1,8 +1,25 @@
 {
     "logs": [
         {
-            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-45:/values-bs/values-bs.xml",
+            "outputFile": "org.opendrive.launcher.app-mergeDebugResources-46:/values-bs/values-bs.xml",
             "map": [
+                {
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\ddd667342d5d23d94f96eedcf0279407\\transformed\\core-1.15.0\\res\\values-bs\\values-bs.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,153,255,353,457,561,663,780",
+                        "endColumns": "97,101,97,103,103,101,116,100",
+                        "endOffsets": "148,250,348,452,556,658,775,876"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,81",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,203,305,403,507,611,713,8459",
+                        "endColumns": "97,101,97,103,103,101,116,100",
+                        "endOffsets": "198,300,398,502,606,708,825,8555"
+                    }
+                },
                 {
                     "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\64566cec9e8de1b5f44c169dfacca070\\transformed\\ui-release\\res\\values-bs\\values-bs.xml",
                     "from": {
@@ -18,23 +35,6 @@
                         "startOffsets": "830,931,1019,1113,1212,1298,1375,7809,7901,7986,8067,8153,8226,8303,8382,8560,8640,8710",
                         "endColumns": "100,87,93,98,85,76,91,91,84,80,85,72,76,78,76,79,69,117",
                         "endOffsets": "926,1014,1108,1207,1293,1370,1462,7896,7981,8062,8148,8221,8298,8377,8454,8635,8705,8823"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.6.0\\transforms\\504a18de1692a927033cd57ea3c30779\\transformed\\core-1.13.1\\res\\values-bs\\values-bs.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,153,255,353,457,561,663,780",
-                        "endColumns": "97,101,97,103,103,101,116,100",
-                        "endOffsets": "148,250,348,452,556,658,775,876"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,81",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,203,305,403,507,611,713,8459",
-                        "endColumns": "97,101,97,103,103,101,116,100",
-                        "endOffsets": "198,300,398,502,606,708,825,8555"
                     }
                 },
                 {
