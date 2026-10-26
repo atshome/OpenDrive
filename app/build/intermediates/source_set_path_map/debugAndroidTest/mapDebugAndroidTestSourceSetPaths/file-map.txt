@@ -1,0 +1,4 @@
+org.opendrive.launcher.test.app-androidTest-0 C:\Users\Administrator\Downloads\OpenDrive-Android14-Download\OpenDrive\app\build\generated\res\resValues\androidTest\debug
+org.opendrive.launcher.test.app-mergeDebugAndroidTestResources-1 C:\Users\Administrator\Downloads\OpenDrive-Android14-Download\OpenDrive\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+org.opendrive.launcher.test.app-mergeDebugAndroidTestResources-2 C:\Users\Administrator\Downloads\OpenDrive-Android14-Download\OpenDrive\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+org.opendrive.launcher.test.app-debugAndroidTest-3 C:\Users\Administrator\Downloads\OpenDrive-Android14-Download\OpenDrive\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources
